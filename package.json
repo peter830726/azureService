@@ -1,13 +1,43 @@
 {
   "name": "azure_service",
   "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app.js",
-    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon index.js\"",
-    "devv": "concurrently --kill-others \"tsc -w\""
+  "description": "包裝 azure 一系列的服務為套件",
+  "engines": {
+    "node": ">=4"
   },
-  "main": "./lib/index.js",
+  "main": "/dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "docs",
+    "lib"
+  ],
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "mocha -r ts-node/register test/*.spec.ts",
+    "prettier": "prettier --parser typescript --trailing-comma all \"{lib,test}/**/*.ts\"",
+    "format": "npm run prettier -- --write",
+    "format:check": "npm run prettier -- -l",
+    "clean": "del-cli dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "docs": "gitbook install && gitbook serve docs",
+    "docs:publish": "./docs/publish.sh",
+    "release": "npm run build && npm publish --access public",
+    "precommit": "npm run format:check",
+    "prepush": "npm run format:check && npm run build && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/peter830726/azureService.git"
+  },
+  "keywords": [
+    "node",
+    "azure",
+    "storage",
+    "cdn",
+    "textToSpeech"
+  ],
   "dependencies": {
     "@types/file-type": "^5.2.1",
     "@types/xmlbuilder": "0.0.32",
@@ -16,5 +46,20 @@
     "file-type": "^7.6.0",
     "file-type-stream": "^1.0.0",
     "xmlbuilder": "^9.0.7"
+  },
+  "devDependencies": {
+    "@types/file-type": "^5.2.1",
+    "@types/xmlbuilder": "0.0.32",
+    "axios": "^0.18.0",
+    "azure-storage": "^2.8.1",
+    "file-type": "^7.6.0",
+    "file-type-stream": "^1.0.0",
+    "xmlbuilder": "^9.0.7",
+    "@types/mocha": "^2.2.41",
+    "mocha": "^3.4.2",
+    "prettier": "^1.8.2",
+    "del-cli": "^1.1.0",
+    "typescript": "^2.6.1",
+    "ts-node": "^3.3.0"
   }
 }
