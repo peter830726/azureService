@@ -19,8 +19,8 @@ export default class Client {
         this.blobService = createBlobService(config.storageAccount, config.storageAccessKey);
     }
     
-    public generateCdnFileUrl(cdnSubDomain: string, container: string, fileName: string): string {
-        return `https://${cdnSubDomain}.azureedge.net/${container}/${fileName}.mp3`;
+    public generateCdnFileUrl(container: string, fileName: string): string {
+        return `https://${this.config.cdnDomain}.azureedge.net/${container}/${fileName}.mp3`;
     }
 
     public getToken(): Promise<any> {
@@ -77,7 +77,7 @@ export default class Client {
             }, (error, result, response) => {
                 if (!error) {
                     if (response.isSuccessful === true) {
-                        resolve(this.generateCdnFileUrl(this.config.cdnDomain, container, fileName));
+                        resolve(this.generateCdnFileUrl(container, fileName));
                     } else {
                         reject("createWriteStreamToBlockBlob Error: unkown error");
                     }
