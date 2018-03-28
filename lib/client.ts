@@ -2,7 +2,7 @@ const USER_ID = "07D3234E49CE426DAA29772419F436CA",
     CLIENT_ID = "1ECFAE91408841A480F00935DC390960";
 
 import { Readable } from "stream";
-import { post, stream } from "./http";
+import { post, stream, AxiosProxyConfig } from "./http";
 import * as xmlbuilder from "xmlbuilder";
 import * as Types from "./types";
 import * as URL from "./urls";
@@ -13,9 +13,11 @@ import { createBlobService, BlobService } from "azure-storage";
 export default class Client {
     public config: Types.ClientConfig;
     public blobService: BlobService;
+    public proxyConfig: Types.AxiosProxyConfig;
 
-    constructor(config: Types.ClientConfig) {
+    constructor(config: Types.ClientConfig, proxyConfig?: Types.AxiosProxyConfig) {
         this.config = config;
+        this.proxyConfig = proxyConfig;
         this.blobService = createBlobService(config.storageAccount, config.storageAccessKey);
     }
     
@@ -89,11 +91,11 @@ export default class Client {
     }
 
     private post(url: string, headers: any, body?: any): Promise<any> {
-        return post(url, headers, body);
+        return post(url, headers, body, this.proxyConfig);
     }
 
     private stream(url: string, headers: any, body?: any): Promise<Readable> {
-        return stream(url, headers, body);
+        return stream(url, headers, body, this.proxyConfig);
     }
 }
 

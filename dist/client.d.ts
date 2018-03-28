@@ -5,7 +5,8 @@ import { BlobService } from "azure-storage";
 export default class Client {
     config: Types.ClientConfig;
     blobService: BlobService;
-    constructor(config: Types.ClientConfig);
+    proxyConfig: Types.AxiosProxyConfig;
+    constructor(config: Types.ClientConfig, proxyConfig?: Types.AxiosProxyConfig);
     generateCdnFileUrl(container: string, fileName: string): string;
     getToken(): Promise<any>;
     cognitive(authToken: string, cognitiveModel: Types.cognitiveModel): Promise<Readable>;

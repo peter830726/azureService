@@ -15,8 +15,9 @@ const Types = require("./types");
 const URL = require("./urls");
 const azure_storage_1 = require("azure-storage");
 class Client {
-    constructor(config) {
+    constructor(config, proxyConfig) {
         this.config = config;
+        this.proxyConfig = proxyConfig;
         this.blobService = azure_storage_1.createBlobService(config.storageAccount, config.storageAccessKey);
     }
     generateCdnFileUrl(container, fileName) {
@@ -86,10 +87,10 @@ class Client {
         });
     }
     post(url, headers, body) {
-        return http_1.post(url, headers, body);
+        return http_1.post(url, headers, body, this.proxyConfig);
     }
     stream(url, headers, body) {
-        return http_1.stream(url, headers, body);
+        return http_1.stream(url, headers, body, this.proxyConfig);
     }
 }
 exports.default = Client;

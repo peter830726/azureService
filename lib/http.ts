@@ -1,11 +1,14 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosProxyConfig } from "axios-https-proxy-fix";
 import { Readable, PassThrough } from "stream";
 import { HTTPError, ReadError, RequestError } from "./exceptions";
 import * as fileType from "file-type";
+import Axios from "axios-https-proxy-fix";
 
 const fileTypeStream = require("file-type-stream").default;
 
 const pkg = require("../package.json");
+
+export type AxiosProxyConfig = AxiosProxyConfig ;
 
 function wrapError(err: AxiosError) {
   if (err.response) {
@@ -28,38 +31,39 @@ function wrapError(err: AxiosError) {
 
 const userAgent = `${pkg.name}/${pkg.version}`;
 
-export function stream(url: string, headers?: any,data?:any): Promise<Readable> {
+export function stream(url: string, headers?: any, data?: any, proxy?: AxiosProxyConfig): Promise<Readable> {
   headers["User-Agent"] = userAgent;
   return axios
-    .post(url,data, { headers, responseType: "stream" })
+    .post(url, data, { headers, responseType: "stream", proxy })
     .then(res => res.data as Readable);
 }
 
-export function get(url: string, headers: any): Promise<any> {
+export function get(url: string, headers: any, proxy?: AxiosProxyConfig): Promise<any> {
   headers["User-Agent"] = userAgent;
 
   return axios
-    .get(url, { headers })
+    .get(url, { headers, proxy })
     .then(res => res.data)
     .catch(wrapError);
 }
 
-export function post(url: string, headers?: any, data?: any): Promise<any> {
+export function post(url: string, headers?: any, data?: any, proxy?: AxiosProxyConfig): Promise<any> {
   headers["Content-Type"] = "application/json";
   headers["User-Agent"] = userAgent;
 
   return axios
-    .post(url, data, { headers })
+    .post(url, data, { headers, proxy })
     .then(res => res.data)
     .catch(wrapError);
 }
 
-export function del(url: string, headers: any): Promise<any> {
+export function del(url: string, headers: any, proxy?: AxiosProxyConfig): Promise<any> {
   headers["User-Agent"] = userAgent;
 
   return axios
-    .delete(url, { headers })
+    .delete(url, { headers, proxy })
     .then(res => res.data)
     .catch(wrapError);
 }
+
 

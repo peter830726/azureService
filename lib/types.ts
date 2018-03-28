@@ -1,3 +1,7 @@
+import { AxiosProxyConfig } from "axios-https-proxy-fix";
+
+export type AxiosProxyConfig = AxiosProxyConfig;
+
 export interface BingApiConfig {
     bingApiSubscriptionKey?: string;
 }
