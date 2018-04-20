@@ -1,5 +1,5 @@
 ## 包裝 azure 一系列服務為套件
-
+{
 import { equal } from "assert";
 import Client from "../lib/client";
 
@@ -36,3 +36,4 @@ describe("client", () => {
         });
     });
 })
+}
