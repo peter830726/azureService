@@ -4,7 +4,7 @@ azure tts text to speech 服務
 將文字轉換為語音後,上傳至 azure 的 storage
 也可以自行call client 做 CRUD,
 此套件主要是將 tts 的服務與storage 做結合
-
+    
     import { equal } from "assert";
     import Client from "../lib/client";
 
